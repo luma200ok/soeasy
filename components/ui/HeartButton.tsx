@@ -15,7 +15,7 @@ export function HeartButton() {
       }}
       className={cn(
         "absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 backdrop-blur-sm transition-all hover:scale-110",
-        liked ? "text-red-500" : "text-slate-400"
+        liked ? "text-[oklch(0.55_0.22_25)]" : "text-[oklch(0.60_0.04_80)]"
       )}
       aria-label="찜하기"
     >

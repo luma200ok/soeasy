@@ -21,11 +21,11 @@ export function FilterBar() {
   };
 
   return (
-    <div className="sticky top-16 z-30 bg-white border-b border-slate-200 px-4 py-3">
+    <div className="sticky top-16 z-30 bg-[oklch(0.93_0.018_85)]/95 backdrop-blur-sm border-b border-[oklch(0.82_0.04_100)] px-4 py-3">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           <Select value={region} onValueChange={onChange(setRegion)}>
-            <SelectTrigger className="w-[110px] h-8 text-sm">
+            <SelectTrigger className="w-[110px] h-8 text-sm bg-white/60 border-[oklch(0.80_0.04_100)] rounded-lg text-[oklch(0.30_0.04_70)]">
               <SelectValue placeholder="지역" />
             </SelectTrigger>
             <SelectContent>
@@ -40,7 +40,7 @@ export function FilterBar() {
           </Select>
 
           <Select value={cost} onValueChange={onChange(setCost)}>
-            <SelectTrigger className="w-[120px] h-8 text-sm">
+            <SelectTrigger className="w-[120px] h-8 text-sm bg-white/60 border-[oklch(0.80_0.04_100)] rounded-lg text-[oklch(0.30_0.04_70)]">
               <SelectValue placeholder="월 생활비" />
             </SelectTrigger>
             <SelectContent>
@@ -52,7 +52,7 @@ export function FilterBar() {
           </Select>
 
           <Select value={internet} onValueChange={onChange(setInternet)}>
-            <SelectTrigger className="w-[130px] h-8 text-sm">
+            <SelectTrigger className="w-[130px] h-8 text-sm bg-white/60 border-[oklch(0.80_0.04_100)] rounded-lg text-[oklch(0.30_0.04_70)]">
               <SelectValue placeholder="인터넷 속도" />
             </SelectTrigger>
             <SelectContent>
@@ -64,7 +64,7 @@ export function FilterBar() {
           </Select>
 
           <Select value={coworking} onValueChange={onChange(setCoworking)}>
-            <SelectTrigger className="w-[110px] h-8 text-sm">
+            <SelectTrigger className="w-[110px] h-8 text-sm bg-white/60 border-[oklch(0.80_0.04_100)] rounded-lg text-[oklch(0.30_0.04_70)]">
               <SelectValue placeholder="코워킹" />
             </SelectTrigger>
             <SelectContent>
@@ -74,10 +74,10 @@ export function FilterBar() {
           </Select>
         </div>
 
-        <div className="flex items-center gap-2 text-sm text-slate-500">
+        <div className="flex items-center gap-2 text-sm text-[oklch(0.50_0.03_75)]">
           <span className="shrink-0">정렬:</span>
           <Select value={sort} onValueChange={onChange(setSort)}>
-            <SelectTrigger className="w-[150px] h-8 text-sm">
+            <SelectTrigger className="w-[150px] h-8 text-sm bg-white/60 border-[oklch(0.80_0.04_100)] rounded-lg text-[oklch(0.30_0.04_70)]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

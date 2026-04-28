@@ -19,7 +19,7 @@ export function CityGridSection({ cities }: CityGridSectionProps) {
       <div className="flex justify-center pt-2">
         <Button
           variant="outline"
-          className="w-full max-w-xs text-slate-600 border-slate-300 hover:bg-slate-50"
+          className="w-full max-w-xs text-[oklch(0.40_0.08_145)] border-[oklch(0.75_0.08_130)] hover:bg-[oklch(0.88_0.05_105)] hover:border-[oklch(0.55_0.12_145)] rounded-xl transition-all"
         >
           더 보기 <ChevronDown className="ml-2 w-4 h-4" />
         </Button>
