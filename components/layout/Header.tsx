@@ -28,12 +28,16 @@ export function Header() {
             </nav>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-slate-600">
-              로그인
-            </Button>
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
-              시작하기
-            </Button>
+            <Link href="/login">
+              <Button variant="ghost" size="sm" className="text-slate-600">
+                로그인
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+                시작하기
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
