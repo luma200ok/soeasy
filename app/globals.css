@@ -48,73 +48,65 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ── 네온 사이버 테마 변수 ── */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  /* 다크 배경 */
+  --background: #0a0a0f;
+  --foreground: #e2e8f0;
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* 카드 / 팝오버 */
+  --card: #0f0f1a;
+  --card-foreground: #e2e8f0;
+  --popover: #0f0f1a;
+  --popover-foreground: #e2e8f0;
+
+  /* 네온 핑크 주 색상 */
+  --primary: #ff2d78;
+  --primary-foreground: #ffffff;
+
+  /* 사이버 블루 보조 */
+  --secondary: #0d1f3c;
+  --secondary-foreground: #00d4ff;
+
+  /* 뮤트 */
+  --muted: #1a1a2e;
+  --muted-foreground: #7c8db5;
+
+  /* 퍼플 액센트 */
+  --accent: #1e0a3c;
+  --accent-foreground: #bf5fff;
+
+  --destructive: #ff2d78;
+  --border: rgba(0, 212, 255, 0.18);
+  --input: rgba(0, 212, 255, 0.1);
+  --ring: #00d4ff;
+
+  --chart-1: #ff2d78;
+  --chart-2: #00d4ff;
+  --chart-3: #bf5fff;
+  --chart-4: #00ffaa;
+  --chart-5: #ffcc00;
+
+  --radius: 0.5rem;
+
+  /* 사이드바 */
+  --sidebar: #0f0f1a;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #ff2d78;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1a1a2e;
+  --sidebar-accent-foreground: #00d4ff;
+  --sidebar-border: rgba(0, 212, 255, 0.15);
+  --sidebar-ring: #00d4ff;
+
+  /* 네온 커스텀 */
+  --neon-pink: #ff2d78;
+  --neon-blue: #00d4ff;
+  --neon-purple: #bf5fff;
+  --neon-green: #00ffaa;
+  --cyber-dark: #0a0a0f;
+  --cyber-surface: #0f0f1a;
+  --cyber-surface-2: #1a1a2e;
 }
 
 @layer base {
@@ -123,8 +115,135 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: var(--cyber-dark);
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
   html {
     @apply font-sans;
   }
+}
+
+/* ── 네온 글로우 유틸리티 ── */
+.neon-text-pink {
+  color: var(--neon-pink);
+  text-shadow:
+    0 0 8px rgba(255, 45, 120, 0.9),
+    0 0 20px rgba(255, 45, 120, 0.5),
+    0 0 40px rgba(255, 45, 120, 0.2);
+}
+
+.neon-text-blue {
+  color: var(--neon-blue);
+  text-shadow:
+    0 0 8px rgba(0, 212, 255, 0.9),
+    0 0 20px rgba(0, 212, 255, 0.5),
+    0 0 40px rgba(0, 212, 255, 0.2);
+}
+
+.neon-text-purple {
+  color: var(--neon-purple);
+  text-shadow:
+    0 0 8px rgba(191, 95, 255, 0.9),
+    0 0 20px rgba(191, 95, 255, 0.5);
+}
+
+.neon-border-pink {
+  border-color: var(--neon-pink);
+  box-shadow:
+    0 0 8px rgba(255, 45, 120, 0.5),
+    inset 0 0 8px rgba(255, 45, 120, 0.05);
+}
+
+.neon-border-blue {
+  border-color: var(--neon-blue);
+  box-shadow:
+    0 0 8px rgba(0, 212, 255, 0.5),
+    inset 0 0 8px rgba(0, 212, 255, 0.05);
+}
+
+.cyber-card {
+  background: var(--cyber-surface);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  box-shadow:
+    0 0 20px rgba(0, 212, 255, 0.05),
+    0 4px 24px rgba(0, 0, 0, 0.5);
+  transition: all 0.25s ease;
+}
+
+.cyber-card:hover {
+  border-color: rgba(0, 212, 255, 0.5);
+  box-shadow:
+    0 0 25px rgba(0, 212, 255, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.6);
+  transform: translateY(-3px);
+}
+
+.neon-btn-pink {
+  background: linear-gradient(135deg, #ff2d78, #c0006a);
+  color: #fff;
+  border: none;
+  box-shadow:
+    0 0 12px rgba(255, 45, 120, 0.6),
+    0 0 30px rgba(255, 45, 120, 0.2);
+  transition: all 0.2s ease;
+}
+
+.neon-btn-pink:hover {
+  box-shadow:
+    0 0 18px rgba(255, 45, 120, 0.9),
+    0 0 40px rgba(255, 45, 120, 0.4);
+  filter: brightness(1.1);
+}
+
+.neon-btn-blue {
+  background: transparent;
+  color: var(--neon-blue);
+  border: 1px solid var(--neon-blue);
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  transition: all 0.2s ease;
+}
+
+.neon-btn-blue:hover {
+  background: rgba(0, 212, 255, 0.1);
+  box-shadow:
+    0 0 16px rgba(0, 212, 255, 0.6),
+    0 0 30px rgba(0, 212, 255, 0.2);
+}
+
+/* 스캔라인 오버레이 효과 */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* 네온 펄스 애니메이션 */
+@keyframes neon-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.neon-pulse {
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+/* 사이버 그라디언트 배경 */
+.cyber-gradient {
+  background: linear-gradient(
+    135deg,
+    #0a0a0f 0%,
+    #0d0d20 30%,
+    #0a001a 60%,
+    #0a0a0f 100%
+  );
+}
+
+/* 텍스트 그라디언트 */
+.gradient-text {
+  background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue), var(--neon-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

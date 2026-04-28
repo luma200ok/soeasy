@@ -1,5 +1,4 @@
 import { ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { CityCard } from "@/components/cards/CityCard";
 import type { City } from "@/lib/mock-data";
 
@@ -17,12 +16,11 @@ export function CityGridSection({ cities }: CityGridSectionProps) {
       </div>
 
       <div className="flex justify-center pt-2">
-        <Button
-          variant="outline"
-          className="w-full max-w-xs text-slate-600 border-slate-300 hover:bg-slate-50"
+        <button
+          className="w-full max-w-xs flex items-center justify-center gap-2 h-10 rounded-md text-sm font-medium transition-all neon-btn-blue"
         >
-          더 보기 <ChevronDown className="ml-2 w-4 h-4" />
-        </Button>
+          더 보기 <ChevronDown className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );

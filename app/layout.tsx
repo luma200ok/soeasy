@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${notoSansKR.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-[family-name:var(--font-noto-sans-kr)] bg-slate-50 text-slate-900">
+      <body className="min-h-full flex flex-col font-[family-name:var(--font-noto-sans-kr)]" style={{ background: 'var(--cyber-dark)', color: 'var(--foreground)' }}>
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
