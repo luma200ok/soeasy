@@ -21,7 +21,7 @@ export function FilterBar() {
   };
 
   return (
-    <div className="sticky top-16 z-30 bg-white border-b border-slate-200 px-4 py-3">
+    <div className="sticky top-14 z-30 bg-white border-b border-gray-100 px-4 py-3">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           <Select value={region} onValueChange={onChange(setRegion)}>
@@ -74,7 +74,7 @@ export function FilterBar() {
           </Select>
         </div>
 
-        <div className="flex items-center gap-2 text-sm text-slate-500">
+        <div className="flex items-center gap-2 text-sm text-gray-400">
           <span className="shrink-0">정렬:</span>
           <Select value={sort} onValueChange={onChange(setSort)}>
             <SelectTrigger className="w-[150px] h-8 text-sm">

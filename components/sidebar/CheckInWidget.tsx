@@ -5,10 +5,10 @@ import { mockCheckInMembers } from "@/lib/mock-data";
 
 export function CheckInWidget() {
   return (
-    <Card>
+    <Card className="shadow-none border-gray-100">
       <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-blue-500" />
+        <CardTitle className="text-xs font-medium text-gray-500 flex items-center gap-2 uppercase tracking-wide">
+          <MapPin className="w-3.5 h-3.5 text-gray-400" />
           지금 체크인
         </CardTitle>
       </CardHeader>
@@ -16,20 +16,20 @@ export function CheckInWidget() {
         <div className="flex items-center gap-3">
           <div className="flex -space-x-2">
             {mockCheckInMembers.slice(0, 4).map((member) => (
-              <Avatar key={member.id} className="w-8 h-8 border-2 border-white">
+              <Avatar key={member.id} className="w-7 h-7 border-2 border-white">
                 <AvatarImage src={member.avatar} alt={`멤버 ${member.id}`} />
-                <AvatarFallback className="text-xs bg-blue-100 text-blue-600">
+                <AvatarFallback className="text-xs bg-gray-100 text-gray-500">
                   {member.id}
                 </AvatarFallback>
               </Avatar>
             ))}
-            <div className="w-8 h-8 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-xs text-slate-500 font-medium">
+            <div className="w-7 h-7 rounded-full bg-gray-50 border-2 border-white flex items-center justify-center text-xs text-gray-400 font-medium">
               +8
             </div>
           </div>
           <div>
-            <p className="text-sm font-semibold text-slate-800">멤버 12명</p>
-            <p className="text-xs text-slate-500">현재 체크인 중</p>
+            <p className="text-sm font-medium text-gray-700">멤버 12명</p>
+            <p className="text-xs text-gray-400">현재 체크인 중</p>
           </div>
         </div>
       </CardContent>
