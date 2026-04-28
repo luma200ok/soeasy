@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR } from "next/font/google";
+import { Cormorant_Garamond, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { BottomCTABar } from "@/components/ui/BottomCTABar";
 
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+});
+
 const notoSansKR = Noto_Sans_KR({
   variable: "--font-noto-sans-kr",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -22,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${notoSansKR.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-[family-name:var(--font-noto-sans-kr)] bg-slate-50 text-slate-900">
+    <html lang="ko" className={`${cormorant.variable} ${notoSansKR.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col font-[family-name:var(--font-noto-sans-kr)] bg-[#0A0A0A] text-[#F7F3ED]">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

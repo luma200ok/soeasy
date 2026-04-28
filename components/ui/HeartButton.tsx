@@ -14,12 +14,12 @@ export function HeartButton() {
         setLiked((prev) => !prev);
       }}
       className={cn(
-        "absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 backdrop-blur-sm transition-all hover:scale-110",
-        liked ? "text-red-500" : "text-slate-400"
+        "absolute top-3 right-3 z-10 p-2 bg-[#0A0A0A]/70 border border-[rgba(201,168,76,0.3)] backdrop-blur-sm transition-all duration-300 hover:border-[rgba(201,168,76,0.7)]",
+        liked ? "text-[#C9A84C]" : "text-[#5A5040]"
       )}
       aria-label="찜하기"
     >
-      <Heart className={cn("w-4 h-4", liked && "fill-red-500")} />
+      <Heart className={cn("w-3.5 h-3.5", liked && "fill-[#C9A84C]")} />
     </button>
   );
 }
