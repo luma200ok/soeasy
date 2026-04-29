@@ -10,6 +10,7 @@ interface CityGridSectionProps {
 export function CityGridSection({ cities }: CityGridSectionProps) {
   return (
     <div className="flex flex-col gap-6">
+      <h2 className="text-lg font-semibold text-slate-900">도시 리스트</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {cities.map((city) => (
           <CityCard key={city.id} city={city} />
