@@ -34,10 +34,18 @@ export default function RegisterPage() {
 
     setLoading(true);
 
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+
+    console.log("[register] data:", data, "error:", error);
 
     if (error) {
-      setError("회원가입에 실패했습니다. 다시 시도해주세요.");
+      setError(`회원가입 실패: ${error.message}`);
       setLoading(false);
       return;
     }

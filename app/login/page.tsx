@@ -23,8 +23,10 @@ export default function LoginPage() {
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
+    console.log("[login] error:", error);
+
     if (error) {
-      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+      setError(error.message);
       setLoading(false);
       return;
     }
