@@ -1,13 +1,24 @@
 import Image from "next/image";
-import { Wifi, Building2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { HeartButton } from "@/components/ui/HeartButton";
-import type { City } from "@/lib/mock-data";
+import { LikeDislikeButton } from "@/components/ui/LikeDislikeButton";
+import type { City, BudgetFilter } from "@/lib/mock-data";
 
 interface CityCardProps {
   city: City;
 }
+
+const BUDGET_LABEL: Record<BudgetFilter, string> = {
+  under100: "100만원 미만",
+  "100to200": "100~200만원",
+  over200: "200만원 이상",
+};
+
+const SEASON_EMOJI: Record<string, string> = {
+  봄: "🌸",
+  여름: "☀️",
+  가을: "🍂",
+  겨울: "❄️",
+};
 
 export function CityCard({ city }: CityCardProps) {
   return (
@@ -20,42 +31,36 @@ export function CityCard({ city }: CityCardProps) {
           className="object-cover transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <Badge className="absolute top-3 left-3 bg-black/60 text-white border-0 text-xs font-bold px-2 py-0.5">
-          #{city.rank}
-        </Badge>
-        <HeartButton />
       </div>
 
       <CardContent className="pt-4 pb-4 px-4">
-        <div className="flex items-start justify-between mb-3">
-          <div>
-            <h3 className="font-bold text-slate-900 text-base leading-tight">{city.name}</h3>
-            <p className="text-xs text-slate-500 mt-0.5">{city.province}</p>
-          </div>
-          <div className="flex items-center gap-1 text-amber-500 text-sm font-semibold shrink-0">
-            <span>★</span>
-            <span>{city.score.toFixed(1)}</span>
-          </div>
+        <div className="mb-3">
+          <h3 className="font-bold text-slate-900 text-base leading-tight">{city.name}</h3>
+          <p className="text-xs text-slate-500 mt-0.5">{city.province}</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-y-2 gap-x-3 text-xs text-slate-600">
-          <div className="flex items-center gap-1.5">
-            <span className="text-green-600 font-semibold">₩</span>
-            <span>{city.monthlyCost}만/월</span>
+        <dl className="grid grid-cols-2 gap-y-2 gap-x-3 text-xs text-slate-600 mb-3">
+          <div>
+            <dt className="text-slate-400 mb-0.5">예산</dt>
+            <dd className="font-medium text-slate-700">{BUDGET_LABEL[city.budget]}</dd>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Wifi className="w-3.5 h-3.5 text-blue-500" />
-            <span>{city.internet}Mbps</span>
+          <div>
+            <dt className="text-slate-400 mb-0.5">지역</dt>
+            <dd className="font-medium text-slate-700">{city.region}</dd>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span>{city.weatherEmoji}</span>
-            <span>{city.temp}°C</span>
+          <div>
+            <dt className="text-slate-400 mb-0.5">환경</dt>
+            <dd className="font-medium text-slate-700">{city.environments.join(", ")}</dd>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Building2 className="w-3.5 h-3.5 text-slate-400" />
-            <span>코워킹 {city.coworking}곳</span>
+          <div>
+            <dt className="text-slate-400 mb-0.5">최고계절</dt>
+            <dd className="font-medium text-slate-700">
+              {city.bestSeasons.map((s) => `${SEASON_EMOJI[s]}${s}`).join(" ")}
+            </dd>
           </div>
-        </div>
+        </dl>
+
+        <LikeDislikeButton likes={city.likes} dislikes={city.dislikes} />
       </CardContent>
     </Card>
   );
