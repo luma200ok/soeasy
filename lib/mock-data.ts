@@ -4,6 +4,21 @@ export type RegionFilter = '수도권' | '경상도' | '전라도' | '강원도'
 export type EnvironmentFilter = '자연친화' | '도심선호' | '카페작업' | '코워킹 필수';
 export type SeasonFilter = '봄' | '여름' | '가을' | '겨울';
 
+// ─── Spot Interface ────────────────────────────────────────────────────────
+export interface Spot {
+  name: string;
+  category: '카페' | '코워킹' | '명소';
+  description: string;
+}
+
+// ─── Monthly Cost Detail ───────────────────────────────────────────────────
+export interface MonthlyCostDetail {
+  housing: number;
+  food: number;
+  transport: number;
+  etc: number;
+}
+
 // ─── City Interface ────────────────────────────────────────────────────────
 export interface City {
   id: number;
@@ -17,6 +32,9 @@ export interface City {
   bestSeasons: SeasonFilter[];
   likes: number;
   dislikes: number;
+  description: string;
+  spots: Spot[];
+  monthlyCostDetail: MonthlyCostDetail;
 }
 
 // ─── Mock Data ─────────────────────────────────────────────────────────────
@@ -26,142 +44,199 @@ export const mockCities: City[] = [
     name: "제주시",
     province: "제주도",
     monthlyCost: 98,
-    imageUrl: "https://picsum.photos/seed/jeju/400/240",
+    imageUrl: "https://picsum.photos/seed/jeju/800/480",
     budget: 'under100',
     region: '제주도',
     environments: ['자연친화', '카페작업'],
     bestSeasons: ['봄', '가을'],
     likes: 142,
     dislikes: 8,
+    description: "제주도 북쪽에 위치한 제주시는 노마드 워커들 사이에서 가장 인기 있는 도시입니다. 세계 각국의 바리스타가 정착한 개성 넘치는 카페와 빠른 인터넷, 그리고 도심에서 10분이면 닿는 자연 덕분에 일과 휴식의 균형을 찾기에 최적입니다.",
+    spots: [
+      { name: "카페 드 아일랜드", category: "카페", description: "한라산 뷰를 즐기며 작업할 수 있는 통창 카페. 기가급 와이파이 보유." },
+      { name: "탐라 코워킹", category: "코워킹", description: "제주 최대 코워킹 스페이스. 월정액 15만원, 24시간 이용 가능." },
+      { name: "한림공원", category: "명소", description: "용암 동굴과 아열대 식물원을 함께 즐길 수 있는 도심 근교 명소." },
+    ],
+    monthlyCostDetail: { housing: 55, food: 25, transport: 10, etc: 8 },
   },
   {
     id: 2,
     name: "부산",
     province: "경상남도",
     monthlyCost: 112,
-    imageUrl: "https://picsum.photos/seed/busan/400/240",
+    imageUrl: "https://picsum.photos/seed/busan/800/480",
     budget: '100to200',
     region: '경상도',
     environments: ['도심선호', '코워킹 필수'],
     bestSeasons: ['여름', '가을'],
     likes: 118,
     dislikes: 12,
+    description: "대한민국 제2의 도시 부산은 활발한 스타트업 씬과 풍부한 코워킹 인프라를 자랑합니다. 해운대와 광안리의 바다 뷰, 해산물 중심의 저렴한 식문화, KTX로 서울까지 2시간 30분이라는 접근성이 장점입니다.",
+    spots: [
+      { name: "스파크플러스 해운대", category: "코워킹", description: "해운대 중심에 위치한 대형 코워킹. 뷰 좋은 라운지와 회의실 완비." },
+      { name: "모모스 커피", category: "카페", description: "한국 커피 챔피언십 우승팀이 운영하는 스페셜티 카페. 조용한 작업 분위기." },
+      { name: "광안리 해수욕장", category: "명소", description: "야경이 아름다운 해변. 주변에 작업하기 좋은 카페가 밀집해 있음." },
+    ],
+    monthlyCostDetail: { housing: 65, food: 28, transport: 12, etc: 7 },
   },
   {
     id: 3,
     name: "강릉",
     province: "강원도",
     monthlyCost: 87,
-    imageUrl: "https://picsum.photos/seed/gangneung/400/240",
+    imageUrl: "https://picsum.photos/seed/gangneung/800/480",
     budget: 'under100',
     region: '강원도',
     environments: ['자연친화', '카페작업'],
     bestSeasons: ['여름'],
     likes: 95,
     dislikes: 15,
+    description: "2018 동계올림픽 이후 급부상한 카페 도시. 안목해변 카페거리는 전국 최고 수준의 커피 품질을 자랑하며, 동해 바다와 대관령 자연을 동시에 누릴 수 있습니다. 서울에서 KTX 60분으로 접근성도 우수합니다.",
+    spots: [
+      { name: "테라로사 강릉 본점", category: "카페", description: "국내 최고 수준의 스페셜티 커피. 넓은 공간과 안정적인 와이파이." },
+      { name: "강릉 창업카페", category: "코워킹", description: "강릉시 운영 스마트 워크 공간. 무료 이용 가능 (사전 예약 필요)." },
+      { name: "경포해변", category: "명소", description: "강릉 대표 해수욕장. 새벽 산책과 저녁 노을이 특히 아름다움." },
+    ],
+    monthlyCostDetail: { housing: 45, food: 22, transport: 12, etc: 8 },
   },
   {
     id: 4,
     name: "전주",
     province: "전라북도",
     monthlyCost: 82,
-    imageUrl: "https://picsum.photos/seed/jeonju/400/240",
+    imageUrl: "https://picsum.photos/seed/jeonju/800/480",
     budget: 'under100',
     region: '전라도',
     environments: ['자연친화', '카페작업'],
     bestSeasons: ['봄', '가을'],
     likes: 87,
     dislikes: 10,
+    description: "한국 전통 문화의 수도 전주는 한옥마을을 중심으로 독특한 분위기의 카페가 밀집해 있습니다. 물가가 저렴하고 음식 퀄리티가 높아 생활 만족도가 높으며, 느린 도시 특유의 여유로운 리듬이 창작 작업에 잘 맞습니다.",
+    spots: [
+      { name: "한옥마을 게스트하우스 카페", category: "카페", description: "한옥 개조 카페. 창호지 조명과 마당이 있어 작업 집중도 높음." },
+      { name: "팔복예술공장", category: "코워킹", description: "폐공장을 리모델링한 복합 문화 공간. 오픈 스튜디오 형태로 작업 가능." },
+      { name: "경기전", category: "명소", description: "조선 왕조 어진을 모신 사적지. 한옥마을의 중심부에 위치." },
+    ],
+    monthlyCostDetail: { housing: 40, food: 22, transport: 10, etc: 10 },
   },
   {
     id: 5,
     name: "춘천",
     province: "강원도",
     monthlyCost: 79,
-    imageUrl: "https://picsum.photos/seed/chuncheon/400/240",
+    imageUrl: "https://picsum.photos/seed/chuncheon/800/480",
     budget: 'under100',
     region: '강원도',
     environments: ['자연친화'],
     bestSeasons: ['봄', '여름'],
     likes: 72,
     dislikes: 18,
+    description: "호수와 산으로 둘러싸인 춘천은 서울에서 ITX로 60분 거리에 위치한 자연 도피처입니다. 소양강과 춘천호의 빼어난 풍경 속에서 조용히 집중 작업하고 싶은 노마드에게 추천합니다. 닭갈비와 막국수로 유명한 식문화도 매력입니다.",
+    spots: [
+      { name: "카페 소양강", category: "카페", description: "소양강 뷰를 독점하는 카페. 창가 자리에서 강을 바라보며 작업 가능." },
+      { name: "강원창조경제혁신센터", category: "코워킹", description: "춘천 내 스타트업 허브. 회원 가입 후 코워킹 공간 이용 가능." },
+      { name: "남이섬", category: "명소", description: "사계절 내내 아름다운 섬 공원. 춘천에서 배로 5분 거리." },
+    ],
+    monthlyCostDetail: { housing: 38, food: 21, transport: 12, etc: 8 },
   },
   {
     id: 6,
     name: "대전",
     province: "대전광역시",
     monthlyCost: 95,
-    imageUrl: "https://picsum.photos/seed/daejeon/400/240",
+    imageUrl: "https://picsum.photos/seed/daejeon/800/480",
     budget: 'under100',
     region: '충청도',
     environments: ['도심선호', '코워킹 필수'],
     bestSeasons: ['봄', '가을'],
     likes: 64,
     dislikes: 9,
+    description: "대한민국 과학기술의 중심 대전은 KAIST와 대덕연구단지를 품은 IT 친화적 도시입니다. 교통의 요충지로 서울·부산 어디든 KTX로 1시간 30분 이내이며, 코워킹 인프라와 IT 네트워킹 기회가 풍부합니다.",
+    spots: [
+      { name: "성심당 본점", category: "카페", description: "대전 대표 베이커리 카페. 2층 카페 공간에서 작업 가능, 와이파이 제공." },
+      { name: "DCC 코워킹라운지", category: "코워킹", description: "대전컨벤션센터 내 스마트워크 공간. 쾌적하고 넓은 시설." },
+      { name: "엑스포과학공원", category: "명소", description: "1993 대전엑스포 부지. 대형 공원에서 저녁 산책 추천." },
+    ],
+    monthlyCostDetail: { housing: 52, food: 24, transport: 11, etc: 8 },
   },
   {
     id: 7,
     name: "경주",
     province: "경상북도",
     monthlyCost: 75,
-    imageUrl: "https://picsum.photos/seed/gyeongju/400/240",
+    imageUrl: "https://picsum.photos/seed/gyeongju/800/480",
     budget: 'under100',
     region: '경상도',
     environments: ['자연친화', '카페작업'],
     bestSeasons: ['봄', '가을', '겨울'],
     likes: 55,
     dislikes: 20,
+    description: "천년 신라의 고도 경주는 도시 전체가 유네스코 세계문화유산입니다. 고분공원과 첨성대 옆 감성 카페에서 작업하는 특별한 경험을 제공하며, 부산에서 기차로 40분 거리라 접근성도 좋습니다.",
+    spots: [
+      { name: "황리단길 카페거리", category: "카페", description: "황남동 고분군 인근 골목에 밀집한 감성 카페. 조용한 분위기 작업 적합." },
+      { name: "경주 청년몰", category: "코워킹", description: "청년 창업자를 위한 공유 오피스. 저렴한 데이패스 운영 중." },
+      { name: "불국사", category: "명소", description: "신라 불교 예술의 걸작. 아침 일찍 방문하면 조용하고 아름다운 경치." },
+    ],
+    monthlyCostDetail: { housing: 35, food: 20, transport: 12, etc: 8 },
   },
   {
     id: 8,
     name: "속초",
     province: "강원도",
     monthlyCost: 88,
-    imageUrl: "https://picsum.photos/seed/sokcho/400/240",
+    imageUrl: "https://picsum.photos/seed/sokcho/800/480",
     budget: 'under100',
     region: '강원도',
     environments: ['자연친화'],
     bestSeasons: ['여름', '겨울'],
     likes: 48,
     dislikes: 22,
+    description: "설악산과 동해 바다를 모두 품은 속초는 사계절 내내 독특한 매력을 발산합니다. 여름엔 동해 해수욕, 겨울엔 설악 설경이 일품이며 속초 중앙시장의 신선한 해산물은 저렴한 식비의 원동력입니다.",
+    spots: [
+      { name: "카페 속초앞바다", category: "카페", description: "동해 바다를 정면으로 바라보는 오션뷰 카페. 일출 작업 성지." },
+      { name: "속초 스마트워크센터", category: "코워킹", description: "속초시 운영 공공 스마트워크 공간. 무료 이용 (신분증 필요)." },
+      { name: "설악산 국립공원", category: "명소", description: "단풍과 설경으로 유명. 케이블카로 권금성까지 이동 가능." },
+    ],
+    monthlyCostDetail: { housing: 46, food: 23, transport: 11, etc: 8 },
   },
   {
     id: 9,
     name: "여수",
     province: "전라남도",
     monthlyCost: 84,
-    imageUrl: "https://picsum.photos/seed/yeosu/400/240",
+    imageUrl: "https://picsum.photos/seed/yeosu/800/480",
     budget: 'under100',
     region: '전라도',
     environments: ['자연친화', '카페작업'],
     bestSeasons: ['여름'],
     likes: 41,
     dislikes: 14,
+    description: "여수 밤바다로 유명한 여수는 돌산도와 오동도를 연결하는 아름다운 항구 도시입니다. 낮에는 이순신 광장 근처 카페에서 작업하고 저녁엔 갓 잡은 해산물로 마무리하는 루틴이 노마드들 사이에서 인기입니다.",
+    spots: [
+      { name: "진남관 앞 카페골목", category: "카페", description: "역사 유적 진남관 인근 카페 밀집 지역. 한려수도 뷰 카페 다수." },
+      { name: "여수창업카페 더비전", category: "코워킹", description: "여수 청년창업 지원 코워킹. 월 5만원으로 이용 가능." },
+      { name: "오동도", category: "명소", description: "동백꽃 군락지로 유명한 섬. 여수항에서 방파제로 연결됨." },
+    ],
+    monthlyCostDetail: { housing: 42, food: 24, transport: 10, etc: 8 },
   },
 ];
 
 export const mockReviews = [
-  {
-    id: 1,
-    cityName: "제주시",
-    content: "카페 퀄리티가 진짜 서울 못지않아요. 인터넷도 빠름!",
-    author: "@nomad_kim",
-    timeAgo: "5분 전",
-  },
-  {
-    id: 2,
-    cityName: "부산",
-    content: "해운대 근처 코워킹 스페이스 가성비 최고입니다",
-    author: "@freelancer_park",
-    timeAgo: "23분 전",
-  },
-  {
-    id: 3,
-    cityName: "전주",
-    content: "한옥마을 근처 카페에서 작업하면 집중 잘 돼요",
-    author: "@remote_lee",
-    timeAgo: "1시간 전",
-  },
+  { id: 1, cityName: "제주시", content: "카페 퀄리티가 진짜 서울 못지않아요. 인터넷도 빠름!", author: "@nomad_kim", timeAgo: "5분 전" },
+  { id: 2, cityName: "제주시", content: "봄 유채꽃 시즌에 작업하면서 힐링 제대로 했습니다. 강추!", author: "@dev_jeju", timeAgo: "2일 전" },
+  { id: 3, cityName: "제주시", content: "탐라 코워킹 월정액 쓰는데 가성비 최고. 24시간 이용 가능한 게 큰 장점.", author: "@freelance_j", timeAgo: "1주 전" },
+  { id: 4, cityName: "부산", content: "해운대 근처 코워킹 스페이스 가성비 최고입니다", author: "@freelancer_park", timeAgo: "23분 전" },
+  { id: 5, cityName: "부산", content: "광안대교 야경 보면서 새벽 코딩... 인생이 뭔지 알 것 같아요.", author: "@nightcoder_b", timeAgo: "3일 전" },
+  { id: 6, cityName: "부산", content: "모모스 커피 퀄리티는 진짜 세계적. 조용하고 와이파이도 안정적.", author: "@coffee_dev", timeAgo: "5일 전" },
+  { id: 7, cityName: "강릉", content: "안목해변 카페에서 바다 보며 작업, 이게 노마드지.", author: "@beach_coder", timeAgo: "1시간 전" },
+  { id: 8, cityName: "강릉", content: "테라로사 본점에서 한나절 보냈는데 너무 좋았어요.", author: "@remote_g", timeAgo: "4일 전" },
+  { id: 9, cityName: "전주", content: "한옥마을 근처 카페에서 작업하면 집중 잘 돼요", author: "@remote_lee", timeAgo: "1시간 전" },
+  { id: 10, cityName: "전주", content: "물가 진짜 착해요. 한달 80만원으로 충분히 살 수 있었어요.", author: "@budget_nomad", timeAgo: "6일 전" },
+  { id: 11, cityName: "춘천", content: "소양강 뷰 카페에서 일하다 보면 시간이 너무 빨리 가요.", author: "@lake_worker", timeAgo: "2시간 전" },
+  { id: 12, cityName: "대전", content: "KTX 덕분에 서울 미팅 있어도 당일치기로 해결됩니다.", author: "@ktx_nomad", timeAgo: "1일 전" },
+  { id: 13, cityName: "경주", content: "황리단길 카페에서 첨성대 보이는 창가 자리 잡으면 집중 잘 돼요.", author: "@history_dev", timeAgo: "3일 전" },
+  { id: 14, cityName: "속초", content: "설악산 보면서 코딩하는 경험... 평생 잊지 못할 것 같아요.", author: "@mountain_coder", timeAgo: "1일 전" },
+  { id: 15, cityName: "여수", content: "밤바다 보면서 작업 마무리하는 루틴, 강추합니다.", author: "@sea_nomad", timeAgo: "4시간 전" },
 ];
 
 export const mockCheckInMembers = [
