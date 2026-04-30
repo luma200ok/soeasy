@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -7,17 +8,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { CityFilters } from "@/lib/city-types";
 
-export interface FilterState {
-  budget: string;
-  region: string;
-  environment: string;
-  season: string;
-}
+export type FilterState = CityFilters;
 
 interface FilterBarProps {
   filters: FilterState;
-  onFilterChange: (key: keyof FilterState, value: string) => void;
 }
 
 const BUDGET_LABELS: Record<string, string> = {
@@ -53,11 +49,28 @@ const SEASON_LABELS: Record<string, string> = {
   겨울: "❄️ 겨울",
 };
 
-export function FilterBar({ filters, onFilterChange }: FilterBarProps) {
+export function FilterBar({ filters }: FilterBarProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  function handleFilterChange(key: keyof FilterState, value: string) {
+    const nextParams = new URLSearchParams(searchParams.toString());
+
+    if (value === "all") {
+      nextParams.delete(key);
+    } else {
+      nextParams.set(key, value);
+    }
+
+    const query = nextParams.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  }
+
   return (
     <div className="sticky top-16 z-30 bg-white border-b border-slate-200 px-4 py-3">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center gap-2">
-        <Select value={filters.budget} onValueChange={(v) => v && onFilterChange("budget", v)}>
+        <Select value={filters.budget} onValueChange={(v) => v && handleFilterChange("budget", v)}>
           <SelectTrigger className="w-[130px] h-8 text-sm">
             <SelectValue>{BUDGET_LABELS[filters.budget] ?? "예산"}</SelectValue>
           </SelectTrigger>
@@ -69,7 +82,7 @@ export function FilterBar({ filters, onFilterChange }: FilterBarProps) {
           </SelectContent>
         </Select>
 
-        <Select value={filters.region} onValueChange={(v) => v && onFilterChange("region", v)}>
+        <Select value={filters.region} onValueChange={(v) => v && handleFilterChange("region", v)}>
           <SelectTrigger className="w-[110px] h-8 text-sm">
             <SelectValue>{REGION_LABELS[filters.region] ?? "지역"}</SelectValue>
           </SelectTrigger>
@@ -84,7 +97,7 @@ export function FilterBar({ filters, onFilterChange }: FilterBarProps) {
           </SelectContent>
         </Select>
 
-        <Select value={filters.environment} onValueChange={(v) => v && onFilterChange("environment", v)}>
+        <Select value={filters.environment} onValueChange={(v) => v && handleFilterChange("environment", v)}>
           <SelectTrigger className="w-[120px] h-8 text-sm">
             <SelectValue>{ENVIRONMENT_LABELS[filters.environment] ?? "환경"}</SelectValue>
           </SelectTrigger>
@@ -97,7 +110,7 @@ export function FilterBar({ filters, onFilterChange }: FilterBarProps) {
           </SelectContent>
         </Select>
 
-        <Select value={filters.season} onValueChange={(v) => v && onFilterChange("season", v)}>
+        <Select value={filters.season} onValueChange={(v) => v && handleFilterChange("season", v)}>
           <SelectTrigger className="w-[110px] h-8 text-sm">
             <SelectValue>{SEASON_LABELS[filters.season] ?? "최고계절"}</SelectValue>
           </SelectTrigger>

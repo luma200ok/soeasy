@@ -1,9 +1,13 @@
 import { Flame } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { mockReviews } from "@/lib/mock-data";
+import type { Review } from "@/lib/city-types";
 
-export function RecentReviewsWidget() {
+interface RecentReviewsWidgetProps {
+  reviews: Review[];
+}
+
+export function RecentReviewsWidget({ reviews }: RecentReviewsWidgetProps) {
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -13,7 +17,11 @@ export function RecentReviewsWidget() {
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-0 flex flex-col gap-3">
-        {mockReviews.map((review, index) => (
+        {reviews.length === 0 && (
+          <p className="text-xs text-slate-400">아직 리뷰가 없습니다.</p>
+        )}
+
+        {reviews.map((review, index) => (
           <div key={review.id}>
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
@@ -25,7 +33,7 @@ export function RecentReviewsWidget() {
               </p>
               <p className="text-xs text-slate-400">{review.author}</p>
             </div>
-            {index < mockReviews.length - 1 && <Separator className="mt-3" />}
+            {index < reviews.length - 1 && <Separator className="mt-3" />}
           </div>
         ))}
       </CardContent>

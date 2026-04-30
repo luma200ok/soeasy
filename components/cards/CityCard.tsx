@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { LikeDislikeButton } from "@/components/ui/LikeDislikeButton";
-import type { City, BudgetFilter } from "@/lib/mock-data";
+import type { BudgetFilter, City } from "@/lib/city-types";
 
 interface CityCardProps {
   city: City;
@@ -63,7 +63,12 @@ export function CityCard({ city }: CityCardProps) {
           </dl>
 
           <div onClick={(e) => e.preventDefault()}>
-            <LikeDislikeButton likes={city.likes} dislikes={city.dislikes} />
+            <LikeDislikeButton
+              cityId={city.id}
+              initialLikes={city.likes}
+              initialDislikes={city.dislikes}
+              initialValue={city.userLike}
+            />
           </div>
         </CardContent>
       </Card>

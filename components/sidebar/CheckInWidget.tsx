@@ -1,9 +1,16 @@
 import { MapPin } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { mockCheckInMembers } from "@/lib/mock-data";
+import type { CheckInMember } from "@/lib/city-types";
 
-export function CheckInWidget() {
+interface CheckInWidgetProps {
+  members: CheckInMember[];
+}
+
+export function CheckInWidget({ members }: CheckInWidgetProps) {
+  const displayMembers = members.slice(0, 4);
+  const memberCount = Math.max(members.length, displayMembers.length);
+
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -15,20 +22,22 @@ export function CheckInWidget() {
       <CardContent className="pt-0">
         <div className="flex items-center gap-3">
           <div className="flex -space-x-2">
-            {mockCheckInMembers.slice(0, 4).map((member) => (
+            {displayMembers.map((member, index) => (
               <Avatar key={member.id} className="w-8 h-8 border-2 border-white">
-                <AvatarImage src={member.avatar} alt={`멤버 ${member.id}`} />
+                <AvatarImage src={member.avatar} alt={member.city} />
                 <AvatarFallback className="text-xs bg-blue-100 text-blue-600">
-                  {member.id}
+                  {index + 1}
                 </AvatarFallback>
               </Avatar>
             ))}
-            <div className="w-8 h-8 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-xs text-slate-500 font-medium">
-              +8
-            </div>
+            {memberCount > displayMembers.length && (
+              <div className="w-8 h-8 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-xs text-slate-500 font-medium">
+                +{memberCount - displayMembers.length}
+              </div>
+            )}
           </div>
           <div>
-            <p className="text-sm font-semibold text-slate-800">멤버 12명</p>
+            <p className="text-sm font-semibold text-slate-800">멤버 {memberCount}명</p>
             <p className="text-xs text-slate-500">현재 체크인 중</p>
           </div>
         </div>

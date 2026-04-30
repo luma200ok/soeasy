@@ -1,15 +1,15 @@
-"use client";
-
-import { notFound, useRouter } from "next/navigation";
-import { use } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { mockCities, mockReviews } from "@/lib/mock-data";
-import { LikeDislikeButton } from "@/components/ui/LikeDislikeButton";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { notFound } from "next/navigation";
+import { ArrowLeft, Send } from "lucide-react";
+import { createClient } from "@/utils/supabase/server";
+import { createReviewAction } from "@/app/actions/reviews";
 import { CityCard } from "@/components/cards/CityCard";
+import { LikeDislikeButton } from "@/components/ui/LikeDislikeButton";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { getCityById, getRelatedCities } from "@/lib/supabase/cities";
+import { getReviewsByCity } from "@/lib/supabase/reviews";
 
 const BUDGET_LABEL: Record<string, string> = {
   under100: "100만원 미만",
@@ -41,23 +41,26 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function CityDetailPage({ params }: PageProps) {
-  const { id } = use(params);
-  const router = useRouter();
+export default async function CityDetailPage({ params }: PageProps) {
+  const { id } = await params;
+  const cityId = Number(id);
 
-  const city = mockCities.find((c) => c.id === Number(id));
+  if (!Number.isInteger(cityId) || cityId <= 0) {
+    notFound();
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const city = await getCityById(cityId, user?.id);
   if (!city) notFound();
 
-  const reviews = mockReviews.filter((r) => r.cityName === city.name);
-
-  const relatedCities = mockCities
-    .filter((c) => c.id !== city.id)
-    .filter(
-      (c) =>
-        c.region === city.region ||
-        c.environments.some((env) => city.environments.includes(env))
-    )
-    .slice(0, 3);
+  const [reviews, relatedCities] = await Promise.all([
+    getReviewsByCity(city.id),
+    getRelatedCities(city, user?.id),
+  ]);
 
   const costEntries = Object.entries(city.monthlyCostDetail) as [
     keyof typeof city.monthlyCostDetail,
@@ -66,7 +69,6 @@ export default function CityDetailPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* 히어로 이미지 */}
       <div className="relative h-72 w-full">
         <Image
           src={city.imageUrl}
@@ -78,16 +80,14 @@ export default function CityDetailPage({ params }: PageProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-        {/* 뒤로 가기 */}
-        <button
-          onClick={() => router.back()}
+        <Link
+          href="/"
           className="absolute top-4 left-4 flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-sm px-3 py-1.5 rounded-full hover:bg-white/30 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           뒤로
-        </button>
+        </Link>
 
-        {/* 도시명 오버레이 */}
         <div className="absolute bottom-5 left-5">
           <h1 className="text-3xl font-bold text-white leading-tight">{city.name}</h1>
           <p className="text-white/80 text-sm mt-1">{city.province}</p>
@@ -95,7 +95,6 @@ export default function CityDetailPage({ params }: PageProps) {
       </div>
 
       <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-8">
-        {/* 기본 정보 + 좋아요 */}
         <section className="bg-white rounded-2xl p-6 shadow-sm">
           <div className="flex items-start justify-between gap-4">
             <dl className="grid grid-cols-2 gap-y-3 gap-x-6 text-sm">
@@ -114,15 +113,19 @@ export default function CityDetailPage({ params }: PageProps) {
               <div>
                 <dt className="text-slate-400 text-xs mb-0.5">최고계절</dt>
                 <dd className="font-semibold text-slate-800">
-                  {city.bestSeasons.map((s) => `${SEASON_EMOJI[s]}${s}`).join(" ")}
+                  {city.bestSeasons.map((season) => `${SEASON_EMOJI[season]}${season}`).join(" ")}
                 </dd>
               </div>
             </dl>
-            <LikeDislikeButton likes={city.likes} dislikes={city.dislikes} />
+            <LikeDislikeButton
+              cityId={city.id}
+              initialLikes={city.likes}
+              initialDislikes={city.dislikes}
+              initialValue={city.userLike}
+            />
           </div>
         </section>
 
-        {/* 도시 소개 */}
         <section className="bg-white rounded-2xl p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-slate-900 mb-3">도시 소개</h2>
           <p className="text-slate-600 leading-relaxed text-sm">{city.description}</p>
@@ -130,12 +133,11 @@ export default function CityDetailPage({ params }: PageProps) {
 
         <Separator />
 
-        {/* 주요 명소 & 카페 */}
         <section className="bg-white rounded-2xl p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-slate-900 mb-4">주요 명소 & 카페</h2>
           <ul className="flex flex-col gap-4">
-            {city.spots.map((spot, i) => (
-              <li key={i} className="flex flex-col gap-1">
+            {city.spots.map((spot) => (
+              <li key={spot.id} className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                   <span
                     className={`text-xs font-medium px-2 py-0.5 rounded-full ${SPOT_BADGE[spot.category]}`}
@@ -152,7 +154,6 @@ export default function CityDetailPage({ params }: PageProps) {
 
         <Separator />
 
-        {/* 월 생활비 */}
         <section className="bg-white rounded-2xl p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-slate-900 mb-1">월 예상 생활비</h2>
           <p className="text-3xl font-bold text-slate-900 mb-5">
@@ -182,16 +183,43 @@ export default function CityDetailPage({ params }: PageProps) {
 
         <Separator />
 
-        {/* 유저 리뷰 */}
         <section className="bg-white rounded-2xl p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">노마드 후기</h2>
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <h2 className="text-lg font-semibold text-slate-900">노마드 후기</h2>
+            {!user && (
+              <Link href="/login" className="text-xs font-medium text-blue-600 hover:text-blue-700">
+                로그인
+              </Link>
+            )}
+          </div>
+
+          {user && (
+            <form action={createReviewAction} className="mb-5 flex flex-col gap-2">
+              <input type="hidden" name="cityId" value={city.id} />
+              <textarea
+                name="content"
+                rows={3}
+                maxLength={500}
+                required
+                placeholder="이 도시에서 일하고 살아본 경험을 남겨주세요."
+                className="w-full resize-none rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+              />
+              <div className="flex justify-end">
+                <Button type="submit" size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Send className="w-3.5 h-3.5" />
+                  등록
+                </Button>
+              </div>
+            </form>
+          )}
+
           {reviews.length === 0 ? (
             <p className="text-sm text-slate-400 text-center py-6">아직 후기가 없습니다.</p>
           ) : (
             <ul className="flex flex-col gap-4">
               {reviews.map((review) => (
                 <li key={review.id} className="flex flex-col gap-1">
-                  <p className="text-sm text-slate-700 leading-relaxed">"{review.content}"</p>
+                  <p className="text-sm text-slate-700 leading-relaxed">&ldquo;{review.content}&rdquo;</p>
                   <div className="flex items-center gap-2 text-xs text-slate-400">
                     <span className="font-medium text-slate-500">{review.author}</span>
                     <span>·</span>
@@ -205,13 +233,12 @@ export default function CityDetailPage({ params }: PageProps) {
 
         <Separator />
 
-        {/* 연관 도시 추천 */}
         {relatedCities.length > 0 && (
           <section>
             <h2 className="text-lg font-semibold text-slate-900 mb-4">비슷한 도시</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {relatedCities.map((c) => (
-                <CityCard key={c.id} city={c} />
+              {relatedCities.map((relatedCity) => (
+                <CityCard key={relatedCity.id} city={relatedCity} />
               ))}
             </div>
           </section>

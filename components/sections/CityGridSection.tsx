@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CityCard } from "@/components/cards/CityCard";
-import type { City } from "@/lib/mock-data";
+import type { City } from "@/lib/city-types";
 
 const PAGE_SIZE = 6;
 
@@ -14,10 +14,6 @@ interface CityGridSectionProps {
 
 export function CityGridSection({ cities }: CityGridSectionProps) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-
-  useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
-  }, [cities]);
 
   const visibleCities = cities.slice(0, visibleCount);
   const hasMore = visibleCount < cities.length;

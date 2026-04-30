@@ -1,57 +1,72 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toggleCityLikeAction } from "@/app/actions/city-likes";
+import type { LikeType } from "@/lib/city-types";
 
 interface LikeDislikeButtonProps {
-  likes: number;
-  dislikes: number;
+  cityId: number;
+  initialLikes: number;
+  initialDislikes: number;
+  initialValue?: LikeType | null;
 }
 
-export function LikeDislikeButton({ likes, dislikes }: LikeDislikeButtonProps) {
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
-  const [currentLikes, setCurrentLikes] = useState(likes);
-  const [currentDislikes, setCurrentDislikes] = useState(dislikes);
+export function LikeDislikeButton({
+  cityId,
+  initialLikes,
+  initialDislikes,
+  initialValue = null,
+}: LikeDislikeButtonProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [currentValue, setCurrentValue] = useState<LikeType | null>(initialValue);
+  const [currentLikes, setCurrentLikes] = useState(initialLikes);
+  const [currentDislikes, setCurrentDislikes] = useState(initialDislikes);
 
-  function handleLike(e: React.MouseEvent) {
+  function handleToggle(e: React.MouseEvent, type: LikeType) {
     e.preventDefault();
-    if (liked) {
-      setLiked(false);
-      setCurrentLikes((prev) => prev - 1);
-    } else {
-      setLiked(true);
-      setCurrentLikes((prev) => prev + 1);
-      if (disliked) {
-        setDisliked(false);
-        setCurrentDislikes((prev) => prev - 1);
-      }
-    }
-  }
+    e.stopPropagation();
 
-  function handleDislike(e: React.MouseEvent) {
-    e.preventDefault();
-    if (disliked) {
-      setDisliked(false);
-      setCurrentDislikes((prev) => prev - 1);
-    } else {
-      setDisliked(true);
-      setCurrentDislikes((prev) => prev + 1);
-      if (liked) {
-        setLiked(false);
-        setCurrentLikes((prev) => prev - 1);
+    const previousValue = currentValue;
+    const previousLikes = currentLikes;
+    const previousDislikes = currentDislikes;
+    const nextValue = currentValue === type ? null : type;
+
+    setCurrentValue(nextValue);
+    setCurrentLikes((prev) => prev + optimisticDelta("like", currentValue, nextValue));
+    setCurrentDislikes((prev) => prev + optimisticDelta("dislike", currentValue, nextValue));
+
+    startTransition(async () => {
+      const result = await toggleCityLikeAction(cityId, type);
+
+      if (!result.ok) {
+        setCurrentValue(previousValue);
+        setCurrentLikes(previousLikes);
+        setCurrentDislikes(previousDislikes);
+
+        if (result.reason === "AUTH_REQUIRED") {
+          router.push("/login");
+        }
+        return;
       }
-    }
+
+      setCurrentValue(result.userLike);
+      setCurrentLikes(result.likes);
+      setCurrentDislikes(result.dislikes);
+    });
   }
 
   return (
     <div className="flex items-center gap-3">
       <button
-        onClick={handleLike}
+        onClick={(e) => handleToggle(e, "like")}
+        disabled={isPending}
         className={cn(
           "flex items-center gap-1 text-xs font-medium transition-colors",
-          liked ? "text-blue-500" : "text-slate-400 hover:text-blue-400"
+          currentValue === "like" ? "text-blue-500" : "text-slate-400 hover:text-blue-400"
         )}
         aria-label="좋아요"
       >
@@ -59,10 +74,11 @@ export function LikeDislikeButton({ likes, dislikes }: LikeDislikeButtonProps) {
         <span>{currentLikes}</span>
       </button>
       <button
-        onClick={handleDislike}
+        onClick={(e) => handleToggle(e, "dislike")}
+        disabled={isPending}
         className={cn(
           "flex items-center gap-1 text-xs font-medium transition-colors",
-          disliked ? "text-red-500" : "text-slate-400 hover:text-red-400"
+          currentValue === "dislike" ? "text-red-500" : "text-slate-400 hover:text-red-400"
         )}
         aria-label="싫어요"
       >
@@ -71,4 +87,10 @@ export function LikeDislikeButton({ likes, dislikes }: LikeDislikeButtonProps) {
       </button>
     </div>
   );
+}
+
+function optimisticDelta(target: LikeType, previous: LikeType | null, next: LikeType | null): number {
+  if (previous === target && next !== target) return -1;
+  if (previous !== target && next === target) return 1;
+  return 0;
 }
