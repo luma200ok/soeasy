@@ -12,7 +12,7 @@ export async function getReviewsByCity(cityId: number): Promise<Review[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("reviews")
-    .select("id, content, author, created_at")
+    .select("id, content, user_id, created_at")
     .eq("city_id", cityId)
     .order("created_at", { ascending: false });
 
@@ -22,7 +22,7 @@ export async function getReviewsByCity(cityId: number): Promise<Review[]> {
     id: r.id,
     cityName: "",
     content: r.content,
-    author: r.author ?? "익명",
+    author: deriveAuthorLabel(r.user_id),
     timeAgo: formatTimeAgo(r.created_at),
   }));
 }
@@ -31,7 +31,7 @@ export async function getRecentReviews(limit = 5): Promise<Review[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("reviews")
-    .select("id, content, author, created_at, cities(name)")
+    .select("id, content, user_id, created_at, cities(name)")
     .order("created_at", { ascending: false })
     .limit(limit);
 
@@ -41,7 +41,7 @@ export async function getRecentReviews(limit = 5): Promise<Review[]> {
     id: r.id,
     cityName: (r.cities as unknown as { name: string } | null)?.name ?? "",
     content: r.content,
-    author: r.author ?? "익명",
+    author: deriveAuthorLabel(r.user_id),
     timeAgo: formatTimeAgo(r.created_at),
   }));
 }
@@ -49,15 +49,20 @@ export async function getRecentReviews(limit = 5): Promise<Review[]> {
 export async function createReview(
   cityId: number,
   userId: string,
-  author: string,
   content: string
 ): Promise<{ error: string | null }> {
   const supabase = await createClient();
   const { error } = await supabase
     .from("reviews")
-    .insert({ city_id: cityId, user_id: userId, author, content });
+    .insert({ city_id: cityId, user_id: userId, content });
 
   return { error: error?.message ?? null };
+}
+
+/** user_id(UUID)를 표시용 레이블로 변환 */
+function deriveAuthorLabel(userId: string | null): string {
+  if (!userId) return "익명";
+  return `nomad_${userId.slice(0, 6)}`;
 }
 
 function formatTimeAgo(dateStr: string | null): string {

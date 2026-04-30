@@ -27,12 +27,7 @@ export async function createReviewAction(
     return { error: "리뷰는 500자 이내로 작성해 주세요." };
   }
 
-  const author =
-    user.user_metadata?.full_name ??
-    user.email?.split("@")[0] ??
-    "익명";
-
-  const { error } = await createReview(cityId, user.id, author, content);
+  const { error } = await createReview(cityId, user.id, content);
   if (error) {
     return { error: "리뷰 등록에 실패했습니다. 다시 시도해 주세요." };
   }

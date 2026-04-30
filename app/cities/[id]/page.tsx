@@ -8,7 +8,6 @@ import { createClient } from "@/utils/supabase/server";
 import { LikeDislikeButton } from "@/components/ui/LikeDislikeButton";
 import { BackButton } from "@/components/ui/BackButton";
 import { ReviewForm } from "@/components/ui/ReviewForm";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CityCard } from "@/components/cards/CityCard";
 
