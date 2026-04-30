@@ -1,41 +1,17 @@
-// ─── Filter Type Exports ───────────────────────────────────────────────────
-export type BudgetFilter = 'under100' | '100to200' | 'over200';
-export type RegionFilter = '수도권' | '경상도' | '전라도' | '강원도' | '제주도' | '충청도';
-export type EnvironmentFilter = '자연친화' | '도심선호' | '카페작업' | '코워킹 필수';
-export type SeasonFilter = '봄' | '여름' | '가을' | '겨울';
+// 도메인 타입은 lib/city-types.ts 에서 관리 — 하위 호환을 위해 re-export
+export type {
+  BudgetFilter,
+  RegionFilter,
+  EnvironmentFilter,
+  SeasonFilter,
+  LikeType,
+  Spot,
+  MonthlyCostDetail,
+  City,
+  CityFilters,
+} from "@/lib/city-types";
 
-// ─── Spot Interface ────────────────────────────────────────────────────────
-export interface Spot {
-  name: string;
-  category: '카페' | '코워킹' | '명소';
-  description: string;
-}
-
-// ─── Monthly Cost Detail ───────────────────────────────────────────────────
-export interface MonthlyCostDetail {
-  housing: number;
-  food: number;
-  transport: number;
-  etc: number;
-}
-
-// ─── City Interface ────────────────────────────────────────────────────────
-export interface City {
-  id: number;
-  name: string;
-  province: string;
-  monthlyCost: number;
-  imageUrl: string;
-  budget: BudgetFilter;
-  region: RegionFilter;
-  environments: EnvironmentFilter[];
-  bestSeasons: SeasonFilter[];
-  likes: number;
-  dislikes: number;
-  description: string;
-  spots: Spot[];
-  monthlyCostDetail: MonthlyCostDetail;
-}
+import type { City } from "@/lib/city-types";
 
 // ─── Mock Data ─────────────────────────────────────────────────────────────
 export const mockCities: City[] = [
