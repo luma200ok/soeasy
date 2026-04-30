@@ -63,7 +63,11 @@ export function CityCard({ city }: CityCardProps) {
           </dl>
 
           <div onClick={(e) => e.preventDefault()}>
-            <LikeDislikeButton likes={city.likes} dislikes={city.dislikes} />
+            <LikeDislikeButton
+              likes={city.likes}
+              dislikes={city.dislikes}
+              cityId={city.id}
+            />
           </div>
         </CardContent>
       </Card>

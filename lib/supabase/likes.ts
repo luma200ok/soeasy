@@ -1,0 +1,66 @@
+import { createClient } from "@/utils/supabase/server";
+
+export async function getLikeStatus(
+  cityId: number,
+  userId: string
+): Promise<"like" | "dislike" | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("city_likes")
+    .select("type")
+    .eq("city_id", cityId)
+    .eq("user_id", userId)
+    .single();
+
+  return (data?.type as "like" | "dislike") ?? null;
+}
+
+export async function getCityLikeCounts(
+  cityId: number
+): Promise<{ likes: number; dislikes: number }> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("city_likes")
+    .select("type")
+    .eq("city_id", cityId);
+
+  if (!data) return { likes: 0, dislikes: 0 };
+
+  return {
+    likes: data.filter((l) => l.type === "like").length,
+    dislikes: data.filter((l) => l.type === "dislike").length,
+  };
+}
+
+export async function toggleLike(
+  cityId: number,
+  userId: string,
+  type: "like" | "dislike"
+): Promise<void> {
+  const supabase = await createClient();
+
+  const { data: existing } = await supabase
+    .from("city_likes")
+    .select("id, type")
+    .eq("city_id", cityId)
+    .eq("user_id", userId)
+    .single();
+
+  if (existing) {
+    if (existing.type === type) {
+      // 같은 타입 재클릭 → 취소
+      await supabase.from("city_likes").delete().eq("id", existing.id);
+    } else {
+      // 다른 타입 → 변경
+      await supabase
+        .from("city_likes")
+        .update({ type })
+        .eq("id", existing.id);
+    }
+  } else {
+    // 신규 투표
+    await supabase
+      .from("city_likes")
+      .insert({ city_id: cityId, user_id: userId, type });
+  }
+}
