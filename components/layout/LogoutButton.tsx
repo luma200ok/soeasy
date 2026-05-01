@@ -20,6 +20,7 @@ export function LogoutButton() {
       size="sm"
       className="text-slate-600"
       onClick={handleLogout}
+      data-testid="logout-btn"
     >
       로그아웃
     </Button>

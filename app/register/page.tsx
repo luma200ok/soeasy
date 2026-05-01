@@ -107,6 +107,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                data-testid="email-input"
               />
             </div>
 
@@ -122,6 +123,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                data-testid="password-input"
               />
             </div>
 
@@ -137,6 +139,7 @@ export default function RegisterPage() {
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
                 required
+                data-testid="password-confirm-input"
               />
             </div>
 
@@ -160,6 +163,7 @@ export default function RegisterPage() {
               type="submit"
               disabled={loading}
               className="w-full h-10 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg mt-2"
+              data-testid="register-submit"
             >
               {loading ? "처리 중..." : "가입하기"}
             </Button>

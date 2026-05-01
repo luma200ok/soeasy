@@ -64,6 +64,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                data-testid="email-input"
               />
             </div>
 
@@ -84,6 +85,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                data-testid="password-input"
               />
             </div>
 
@@ -95,6 +97,7 @@ export default function LoginPage() {
               type="submit"
               disabled={loading}
               className="w-full h-10 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg mt-2"
+              data-testid="login-submit"
             >
               {loading ? "로그인 중..." : "로그인"}
             </Button>
