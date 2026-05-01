@@ -44,6 +44,16 @@ async function globalSetup(_config: FullConfig) {
   // 홈으로 리디렉션될 때까지 대기
   await page.waitForURL(`${baseURL}/`, { timeout: 30_000 });
 
+  // 네트워크가 안정될 때까지 대기 (쿠키 완전히 세팅될 시간 확보)
+  await page.waitForLoadState("networkidle");
+
+  // 서버 사이드 렌더링에서 로그인 상태가 반영됐는지 확인
+  // (logout-btn이 보여야 서버가 세션을 인식한 것)
+  await page.locator('[data-testid="logout-btn"]').waitFor({
+    state: "visible",
+    timeout: 15_000,
+  });
+
   // storageState 저장
   await context.storageState({ path: AUTH_FILE });
 
