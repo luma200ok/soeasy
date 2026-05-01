@@ -11,9 +11,37 @@ const notoSansKR = Noto_Sans_KR({
   weight: ["400", "500", "700"],
 });
 
+const BASE_URL = "https://soeasy-khaki.vercel.app";
+
 export const metadata: Metadata = {
-  title: "SoEasy — 한국 디지털 노마드 도시 랭킹",
+  title: {
+    default: "SoEasy — 한국 디지털 노마드 도시 랭킹",
+    template: "%s | SoEasy",
+  },
   description: "한국에서 노마드로 살기 좋은 도시를 찾아보세요. 실거주자들이 직접 평가한 생생한 데이터.",
+  metadataBase: new URL(BASE_URL),
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: BASE_URL,
+    siteName: "SoEasy",
+    title: "SoEasy — 한국 디지털 노마드 도시 랭킹",
+    description: "한국에서 노마드로 살기 좋은 도시를 찾아보세요. 실거주자들이 직접 평가한 생생한 데이터.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "SoEasy — 한국 디지털 노마드 도시 랭킹",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoEasy — 한국 디지털 노마드 도시 랭킹",
+    description: "한국에서 노마드로 살기 좋은 도시를 찾아보세요. 실거주자들이 직접 평가한 생생한 데이터.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
