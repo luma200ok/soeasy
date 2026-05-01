@@ -27,7 +27,7 @@ export async function Header() {
             ) : (
               <>
                 <Link href="/login">
-                  <Button variant="ghost" size="sm" className="text-slate-600">
+                  <Button variant="ghost" size="sm" className="text-slate-600" data-testid="login-btn">
                     로그인
                   </Button>
                 </Link>

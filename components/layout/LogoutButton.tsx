@@ -9,7 +9,7 @@ export function LogoutButton() {
   const supabase = createClient();
 
   async function handleLogout() {
-    await supabase.auth.signOut();
+    await supabase.auth.signOut({ scope: "local" });
     router.push("/login");
     router.refresh();
   }
@@ -20,6 +20,7 @@ export function LogoutButton() {
       size="sm"
       className="text-slate-600"
       onClick={handleLogout}
+      data-testid="logout-btn"
     >
       로그아웃
     </Button>
