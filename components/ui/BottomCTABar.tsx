@@ -1,13 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { X, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/utils/supabase/client";
 
 export function BottomCTABar() {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) setVisible(true);
+    });
+  }, []);
 
   if (!visible) return null;
 
@@ -23,7 +31,7 @@ export function BottomCTABar() {
             size="sm"
             variant="secondary"
             className="bg-white text-blue-600 hover:bg-blue-50 font-semibold"
-            onClick={() => router.push("/cities")}
+            onClick={() => router.push("/login?redirect=/cities")}
           >
             참여하기
           </Button>
