@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { X, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function BottomCTABar() {
   const [visible, setVisible] = useState(true);
+  const router = useRouter();
 
   if (!visible) return null;
 
@@ -21,6 +23,7 @@ export function BottomCTABar() {
             size="sm"
             variant="secondary"
             className="bg-white text-blue-600 hover:bg-blue-50 font-semibold"
+            onClick={() => router.push("/cities")}
           >
             참여하기
           </Button>
