@@ -36,6 +36,7 @@ async function globalSetup(_config: FullConfig) {
 
   // 로그인 페이지에서 인증
   await page.goto(`${baseURL}/login`);
+  await page.waitForLoadState("networkidle");
   await page.locator('[data-testid="email-input"]').fill(email);
   await page.locator('[data-testid="password-input"]').fill(password);
   await page.locator('[data-testid="login-submit"]').click();
