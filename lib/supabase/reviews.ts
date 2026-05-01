@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 
 export interface Review {
   id: string;
+  cityId: number | null;
   cityName: string;
   content: string;
   author: string;
@@ -20,6 +21,7 @@ export async function getReviewsByCity(cityId: number): Promise<Review[]> {
 
   return data.map((r) => ({
     id: r.id,
+    cityId,
     cityName: "",
     content: r.content,
     author: deriveAuthorLabel(r.user_id),
@@ -31,7 +33,7 @@ export async function getRecentReviews(limit = 5): Promise<Review[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("reviews")
-    .select("id, content, user_id, created_at, cities(name)")
+    .select("id, city_id, content, user_id, created_at, cities(name)")
     .order("created_at", { ascending: false })
     .limit(limit);
 
@@ -39,6 +41,7 @@ export async function getRecentReviews(limit = 5): Promise<Review[]> {
 
   return data.map((r) => ({
     id: r.id,
+    cityId: r.city_id as number | null,
     cityName: (r.cities as unknown as { name: string } | null)?.name ?? "",
     content: r.content,
     author: deriveAuthorLabel(r.user_id),

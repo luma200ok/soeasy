@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Flame } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -24,9 +25,18 @@ export async function RecentReviewsWidget() {
             <div key={review.id}>
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-semibold text-blue-600">
-                    {review.cityName}
-                  </span>
+                  {review.cityId ? (
+                    <Link
+                      href={`/cities/${review.cityId}`}
+                      className="text-xs font-semibold text-blue-600 hover:underline"
+                    >
+                      {review.cityName}
+                    </Link>
+                  ) : (
+                    <span className="text-xs font-semibold text-blue-600">
+                      {review.cityName}
+                    </span>
+                  )}
                   <span className="text-xs text-slate-400">
                     {review.timeAgo}
                   </span>
