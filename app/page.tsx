@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { FilterBar } from "@/components/sections/FilterBar";
 import { CityGridSection } from "@/components/sections/CityGridSection";
-import { CheckInWidget } from "@/components/sidebar/CheckInWidget";
 import { RecentReviewsWidget } from "@/components/sidebar/RecentReviewsWidget";
 import { MonthlyStatsWidget } from "@/components/sidebar/MonthlyStatsWidget";
 import { getCities } from "@/lib/supabase/cities";
@@ -45,7 +44,6 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             </div>
 
             <aside className="w-full lg:w-80 shrink-0 flex flex-col gap-4">
-              <CheckInWidget />
               <RecentReviewsWidget />
               <MonthlyStatsWidget />
             </aside>
