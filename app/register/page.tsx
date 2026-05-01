@@ -40,8 +40,6 @@ export default function RegisterPage() {
       },
     });
 
-    console.log("[register] data:", data, "error:", error);
-
     if (error) {
       setError(`회원가입 실패: ${error.message}`);
       setLoading(false);

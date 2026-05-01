@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function proxy(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -37,7 +37,6 @@ export async function proxy(request: NextRequest) {
     !request.nextUrl.pathname.startsWith("/register") &&
     !request.nextUrl.pathname.startsWith("/auth")
   ) {
-    // 홈('/')과 도시 상세 페이지는 공개 페이지이므로 통과
     const isPublic =
       request.nextUrl.pathname === "/" ||
       request.nextUrl.pathname.startsWith("/cities");
