@@ -176,7 +176,7 @@ export async function getRelatedCities(
 
   const cityIds = cities.map((c) => c.id);
 
-  const [environmentsResult, seasonsResult] = await Promise.all([
+  const [environmentsResult, seasonsResult, likesResult] = await Promise.all([
     supabase
       .from("city_environments")
       .select("city_id, environment")
@@ -185,10 +185,15 @@ export async function getRelatedCities(
       .from("city_seasons")
       .select("city_id, season")
       .in("city_id", cityIds),
+    supabase
+      .from("city_likes")
+      .select("city_id, type")
+      .in("city_id", cityIds),
   ]);
 
   const environmentsData = environmentsResult.data ?? [];
   const seasonsData = seasonsResult.data ?? [];
+  const likesData = likesResult.data ?? [];
 
   const mapped: City[] = cities.map((city) => ({
     id: city.id,
@@ -204,8 +209,8 @@ export async function getRelatedCities(
     bestSeasons: seasonsData
       .filter((s) => s.city_id === city.id)
       .map((s) => s.season) as SeasonFilter[],
-    likes: 0,
-    dislikes: 0,
+    likes: likesData.filter((l) => l.city_id === city.id && l.type === "like").length,
+    dislikes: likesData.filter((l) => l.city_id === city.id && l.type === "dislike").length,
     description: city.description,
     spots: [],
     monthlyCostDetail: { housing: 0, food: 0, transport: 0, etc: 0 },
