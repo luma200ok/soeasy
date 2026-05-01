@@ -17,11 +17,12 @@ type AuthFixtures = {
 };
 
 export const test = base.extend<AuthFixtures>({
-  authenticatedPage: async ({ browser }, use) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  authenticatedPage: async ({ browser }, provide) => {
     // global.setup 에서 저장한 storageState 로 새 컨텍스트 생성
     const context = await browser.newContext({ storageState: AUTH_FILE });
     const page = await context.newPage();
-    await use(page);
+    await provide(page);
     await context.close();
   },
 });

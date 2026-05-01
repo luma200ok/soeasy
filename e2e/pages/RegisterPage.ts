@@ -36,11 +36,11 @@ export class RegisterPage {
 
   async getErrorMessage(): Promise<string> {
     await this.errorMessage.waitFor({ state: "visible" });
-    return this.errorMessage.textContent() ?? "";
+    return (await this.errorMessage.textContent()) ?? "";
   }
 
   async getSuccessMessage(): Promise<string> {
     await this.successMessage.waitFor({ state: "visible" });
-    return this.successMessage.textContent() ?? "";
+    return (await this.successMessage.textContent()) ?? "";
   }
 }

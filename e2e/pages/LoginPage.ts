@@ -31,6 +31,6 @@ export class LoginPage {
 
   async getErrorMessage(): Promise<string> {
     await this.errorMessage.waitFor({ state: "visible" });
-    return this.errorMessage.textContent() ?? "";
+    return (await this.errorMessage.textContent()) ?? "";
   }
 }
