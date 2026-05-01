@@ -1,49 +1,46 @@
-import { Page } from "@playwright/test";
+import { Page, Locator } from "@playwright/test";
 
 /**
  * Page Object Model — 회원가입 페이지 (/register)
- *
- * 담당 영역:
- * - 이메일 / 비밀번호 / 비밀번호 확인 입력 폼
- * - 회원가입 버튼
- * - 에러 / 성공 메시지
- * - 로그인 링크
  */
 export class RegisterPage {
   readonly page: Page;
-
-  // --- 폼 필드 ---
-  // TODO: emailInput, passwordInput, passwordConfirmInput locator 정의
-
-  // --- 버튼 ---
-  // TODO: submitButton locator 정의
-
-  // --- 피드백 ---
-  // TODO: errorMessage, successMessage locator 정의
+  readonly emailInput: Locator;
+  readonly passwordInput: Locator;
+  readonly passwordConfirmInput: Locator;
+  readonly submitButton: Locator;
+  readonly errorMessage: Locator;
+  readonly successMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.emailInput = page.locator('[data-testid="email-input"]');
+    this.passwordInput = page.locator('[data-testid="password-input"]');
+    this.passwordConfirmInput = page.locator('[data-testid="password-confirm-input"]');
+    this.submitButton = page.locator('[data-testid="register-submit"]');
+    this.errorMessage = page.locator("p.text-red-500");
+    this.successMessage = page.locator("h2");
   }
 
-  /** 회원가입 페이지로 이동 */
   async goto(): Promise<void> {
-    // TODO: 구현
+    await this.page.goto("/register");
+    await this.page.waitForLoadState("networkidle");
   }
 
-  /** 폼 입력 후 회원가입 제출 */
-  async register(_email: string, _password: string, _passwordConfirm: string): Promise<void> {
-    // TODO: 구현
+  async register(email: string, password: string, passwordConfirm: string): Promise<void> {
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(password);
+    await this.passwordConfirmInput.fill(passwordConfirm);
+    await this.submitButton.click();
   }
 
-  /** 에러 메시지 텍스트 반환 */
   async getErrorMessage(): Promise<string> {
-    // TODO: 구현
-    return "";
+    await this.errorMessage.waitFor({ state: "visible" });
+    return this.errorMessage.textContent() ?? "";
   }
 
-  /** 성공 메시지 텍스트 반환 */
   async getSuccessMessage(): Promise<string> {
-    // TODO: 구현
-    return "";
+    await this.successMessage.waitFor({ state: "visible" });
+    return this.successMessage.textContent() ?? "";
   }
 }
